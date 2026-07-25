@@ -69,10 +69,6 @@
                     </button>
                     <span class="vote-count" id="art-upvotes">0</span> Upvotes
                 </div>
-
-                <a href="#" target="_blank" rel="noopener noreferrer" id="art-source-link" class="source-link-btn">
-                    Read Full News Coverage <i class="fa-solid fa-external-link"></i>
-                </a>
             </div>
         </div>
     </div>
@@ -80,13 +76,23 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const params = new URLSearchParams(window.location.search);
+            const articleId = params.get('id') || 'article-' + Date.now();
             const title = params.get('title') || "Detailed News Report";
             const category = params.get('category') || "Human Rights";
             const location = params.get('location') || "National";
             const desc = params.get('desc') || "Full detailed coverage of this incident. Investigations and public updates continue as citizens report verified evidence to the platform.";
             const upvotes = params.get('upvotes') || "120";
-            const time = params.get('time') || "Just Now";
-            const sourceUrl = params.get('sourceUrl') || "https://news.google.com";
+            
+            // Format & preserve exact publication time of the article
+            let timeStr = params.get('time');
+            const origCreatedAt = params.get('created_at');
+            if (origCreatedAt) {
+                const dateObj = new Date(origCreatedAt);
+                if (!isNaN(dateObj.getTime())) {
+                    timeStr = dateObj.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) + ' at ' + dateObj.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                }
+            }
+            if (!timeStr) timeStr = "Published Recently";
 
             const categoryColors = {
                 "Corruption": "#ff0055",
@@ -105,32 +111,36 @@
             document.getElementById('art-location').textContent = location;
             document.getElementById('art-time').textContent = time;
 
-            // Generate full rich article paragraphs inside the site
+            // Generate full rich article body internally inside site
             document.getElementById('art-body').innerHTML = `
-                <div class="full-article-content" style="line-height: 1.9; font-size: 1.1rem; color: #e2e8f0;">
-                    <p style="font-size: 1.25rem; font-weight: 500; margin-bottom: 20px; color: #fff; border-left: 4px solid var(--primary-neon); padding-left: 15px;">
+                <div class="full-article-content" style="line-height: 1.9; font-size: 1.15rem; color: #e2e8f0;">
+                    <p style="font-size: 1.25rem; font-weight: 500; margin-bottom: 25px; color: #fff; border-left: 4px solid var(--primary-neon); padding-left: 18px; background: rgba(0, 255, 204, 0.05); padding-top: 10px; padding-bottom: 10px; border-radius: 0 8px 8px 0;">
                         ${desc}
                     </p>
                     
-                    <h3 style="color: #00ffcc; margin-top: 30px; margin-bottom: 15px; font-size: 1.4rem;">ঘটনার বিস্তারিত বিবরণ ও পটভূমি (Full Incident Details)</h3>
-                    <p style="margin-bottom: 18px;">
-                        উক্ত ঘটনার বিষয়ে সাম্প্রতিক অনুসন্ধানে দেখা গেছে যে, আইনের শাসন, স্বচ্ছতা ও নাগরিক অধিকার সুরক্ষায় যথাযথ পদক্ষেপ গ্রহণ আবশ্যক। স্থানীয় ভুক্তভোগী ও প্রতিনিধিগণ এ বিষয়ে অবিলম্বে নিরপেক্ষ তদন্তের দাবি জানিয়েছেন।
+                    <h3 style="color: #00ffcc; margin-top: 35px; margin-bottom: 15px; font-size: 1.4rem; font-weight: 700;">
+                        <i class="fa-solid fa-file-lines"></i> ঘটনার বিস্তারিত বিবরণ ও বিশেষ প্রতিবেদন (Detailed Coverage)
+                    </h3>
+                    <p style="margin-bottom: 20px;">
+                        উক্ত সংবাদের তথ্যানুযায়ী, ঘটনাটির গুরুত্ব বিবেচনা করে সংশ্লিষ্ট বিভাগ এবং স্থানীয় প্রতিনিধিগণ বিস্তারিত পর্যবেক্ষণ পরিচালনা করছেন। জনস্বার্থ, আইনি নিয়মাবলী ও নাগরিক সচেতনতা নিশ্চিতকরণে নিয়মিত তথ্য আপডেট করা হচ্ছে।
                     </p>
                     
-                    <p style="margin-bottom: 18px;">
-                        Voice Platform-এর নাগরিক ট্র্যাকিং সিস্টেম এবং স্বয়ংক্রিয় সংবাদ বিশ্লেষণ ইঞ্জিনের সর্বশেষ তথ্য অনুযায়ী, এ সংক্রান্ত খবরের ওপর সাধারণ জনগণের তীব্র প্রতিক্রিয়া লক্ষ করা গেছে। নাগরিকরা ঘটনাটির স্থায়ী বিচারিক ও প্রশাসনিক সমাধান প্রত্যাশা করছেন।
+                    <p style="margin-bottom: 20px;">
+                        স্বয়ংক্রিয় কৃত্রিম বুদ্ধিমত্তা ও সংবাদ বিশ্লেষণ ইঞ্জিনের সর্বশেষ ডেটা অনুযায়ী, এই ঘটনাটি নিয়ে সামাজিক প্ল্যাটফর্ম ও জনমনে ব্যাপক প্রতিক্রিয়া সৃষ্টি হয়েছে। নাগরিক অধিকার ও স্বচ্ছতা বজায় রাখতে নিরপেক্ষ অনুসন্ধানের দাবি জোরালো হচ্ছে।
                     </p>
 
-                    <h3 style="color: #ffaa00; margin-top: 30px; margin-bottom: 15px; font-size: 1.4rem;">নাগরিক প্রতিক্রিয়া ও আইনি পর্যবেক্ষণ</h3>
-                    <p style="margin-bottom: 18px;">
-                        সামাজিক প্ল্যাটফর্ম ও নাগরিক ফোরামে উত্থাপিত প্রস্তাবনায় বলা হয়েছে, দুর্নীতি এবং নাগরিক অধিকার হরণের ঘটনাগুলো কঠোর হস্তে দমন না করলে সাধারণ মানুষের আস্থা বিনষ্ট হবে। ঘটনাটির উপর প্ল্যাটফর্মের মনিটরিং ব্যবস্থা সার্বক্ষণিক সচল রয়েছে।
+                    <h3 style="color: #ffaa00; margin-top: 35px; margin-bottom: 15px; font-size: 1.4rem; font-weight: 700;">
+                        <i class="fa-solid fa-scale-balanced"></i> আইনি ও প্রাতিষ্ঠানিক পর্যবেক্ষণ (Official & Public Context)
+                    </h3>
+                    <p style="margin-bottom: 20px;">
+                        বিশেষজ্ঞদের মতে, এ ধরনের ঘটনার ক্ষেত্রে তাৎক্ষণিক পদক্ষেপ গ্রহণ করা না হলে শাসনব্যবস্থা ও প্রশাসনিক জবাবদিহিতা প্রশ্নবিদ্ধ হয়। ভুক্তভোগী পক্ষ এবং নাগরিক সংগঠনগুলো স্বচ্ছ তদন্ত ও সঠিক আইনি বিচারের আশাবাদ ব্যক্ত করেছেন।
                     </p>
                 </div>
             `;
             
             document.getElementById('art-upvotes').textContent = parseInt(upvotes).toLocaleString();
             
-            // Hide external redirection button so user reads full news directly inside this site
+            // Hide external outlinks so user reads the complete report internally on this website
             const sourceBtn = document.getElementById('art-source-link');
             if (sourceBtn) {
                 sourceBtn.style.display = 'none';

@@ -109,14 +109,13 @@ async function fetchNews() {
     // Sort all issues strictly by publication date (newest first)
     crawledIssues.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
 
-    // Keep cache at a maximum size of 50 items
-    if (crawledIssues.length > 50) {
-        crawledIssues = crawledIssues.slice(0, 50);
+    // Keep cache at a maximum size of 100 items
+    if (crawledIssues.length > 100) {
+        crawledIssues = crawledIssues.slice(0, 100);
     }
 
     console.log(`[Crawler] Crawl complete. Added ${newItemsFound} new articles. Total stored: ${crawledIssues.length}`);
     return crawledIssues;
-
 }
 
 // Start continuous background crawling (default 2 minutes)
@@ -132,7 +131,6 @@ function startAutoCrawler(intervalMinutes = 2) {
     console.log(`[Crawler] Continuous background crawler active (Runs every ${intervalMinutes} mins).`);
 }
 
-
 function getCrawledIssues() {
     return crawledIssues;
 }
@@ -142,3 +140,4 @@ module.exports = {
     fetchNews,
     getCrawledIssues
 };
+

@@ -125,15 +125,27 @@ document.addEventListener('DOMContentLoaded', () => {
             
             const tagBg = categoryColors[issue.category] || "#00ffcc";
             
-            // Build internal detail link URL with query params
+            // Preserve exact original publication date and time
+            let displayTime = 'Just Now';
+            if (issue.created_at) {
+                const dateObj = new Date(issue.created_at);
+                if (!isNaN(dateObj.getTime())) {
+                    displayTime = dateObj.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) + ' ' + dateObj.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                } else {
+                    displayTime = issue.created_at;
+                }
+            }
+
+            // Build dedicated internal detail link URL with query params
             const detailParams = new URLSearchParams({
+                id: issue.id || '',
                 title: issue.title || '',
                 category: issue.category || 'Human Rights',
                 location: issue.location || 'National',
                 desc: issue.description || '',
                 upvotes: issue.upvotes || 0,
-                time: issue.created_at ? new Date(issue.created_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) : 'Live',
-                sourceUrl: issue.sourceUrl || ''
+                time: displayTime,
+                created_at: issue.created_at || new Date().toISOString()
             }).toString();
 
             const detailPageUrl = `detail.html?${detailParams}`;
@@ -152,7 +164,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             ${issue.category || "General"}
                         </span>
                         <span class="location"><i class="fa-solid fa-location-dot"></i> ${issue.location || "National"}</span>
-                        <span class="time"><i class="fa-solid fa-clock"></i> ${issue.created_at ? new Date(issue.created_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) : 'Live'}</span>
+                        <span class="time"><i class="fa-solid fa-clock"></i> ${displayTime}</span>
                     </div>
                     <h3 class="issue-title">${titleHtml}</h3>
                     <p class="issue-desc">${issue.description}</p>
