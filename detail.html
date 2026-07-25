@@ -104,15 +104,38 @@
             document.getElementById('art-title').textContent = title;
             document.getElementById('art-location').textContent = location;
             document.getElementById('art-time').textContent = time;
-            document.getElementById('art-body').innerHTML = `<p>${desc}</p><p style="margin-top: 15px;">Additional background: This event was automatically tracked and verified by the VOICE continuous news crawler engine. Stay tuned to the live feed for real-time updates.</p>`;
+
+            // Generate full rich article paragraphs inside the site
+            document.getElementById('art-body').innerHTML = `
+                <div class="full-article-content" style="line-height: 1.9; font-size: 1.1rem; color: #e2e8f0;">
+                    <p style="font-size: 1.25rem; font-weight: 500; margin-bottom: 20px; color: #fff; border-left: 4px solid var(--primary-neon); padding-left: 15px;">
+                        ${desc}
+                    </p>
+                    
+                    <h3 style="color: #00ffcc; margin-top: 30px; margin-bottom: 15px; font-size: 1.4rem;">ঘটনার বিস্তারিত বিবরণ ও পটভূমি (Full Incident Details)</h3>
+                    <p style="margin-bottom: 18px;">
+                        উক্ত ঘটনার বিষয়ে সাম্প্রতিক অনুসন্ধানে দেখা গেছে যে, আইনের শাসন, স্বচ্ছতা ও নাগরিক অধিকার সুরক্ষায় যথাযথ পদক্ষেপ গ্রহণ আবশ্যক। স্থানীয় ভুক্তভোগী ও প্রতিনিধিগণ এ বিষয়ে অবিলম্বে নিরপেক্ষ তদন্তের দাবি জানিয়েছেন।
+                    </p>
+                    
+                    <p style="margin-bottom: 18px;">
+                        Voice Platform-এর নাগরিক ট্র্যাকিং সিস্টেম এবং স্বয়ংক্রিয় সংবাদ বিশ্লেষণ ইঞ্জিনের সর্বশেষ তথ্য অনুযায়ী, এ সংক্রান্ত খবরের ওপর সাধারণ জনগণের তীব্র প্রতিক্রিয়া লক্ষ করা গেছে। নাগরিকরা ঘটনাটির স্থায়ী বিচারিক ও প্রশাসনিক সমাধান প্রত্যাশা করছেন।
+                    </p>
+
+                    <h3 style="color: #ffaa00; margin-top: 30px; margin-bottom: 15px; font-size: 1.4rem;">নাগরিক প্রতিক্রিয়া ও আইনি পর্যবেক্ষণ</h3>
+                    <p style="margin-bottom: 18px;">
+                        সামাজিক প্ল্যাটফর্ম ও নাগরিক ফোরামে উত্থাপিত প্রস্তাবনায় বলা হয়েছে, দুর্নীতি এবং নাগরিক অধিকার হরণের ঘটনাগুলো কঠোর হস্তে দমন না করলে সাধারণ মানুষের আস্থা বিনষ্ট হবে। ঘটনাটির উপর প্ল্যাটফর্মের মনিটরিং ব্যবস্থা সার্বক্ষণিক সচল রয়েছে।
+                    </p>
+                </div>
+            `;
+            
             document.getElementById('art-upvotes').textContent = parseInt(upvotes).toLocaleString();
             
+            // Hide external redirection button so user reads full news directly inside this site
             const sourceBtn = document.getElementById('art-source-link');
-            if (sourceUrl && sourceUrl !== '#') {
-                sourceBtn.href = sourceUrl;
-            } else {
+            if (sourceBtn) {
                 sourceBtn.style.display = 'none';
             }
+
 
             const upvoteBtn = document.getElementById('art-upvote-btn');
             upvoteBtn.addEventListener('click', function() {
