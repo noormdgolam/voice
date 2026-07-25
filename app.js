@@ -48,6 +48,9 @@ document.addEventListener('DOMContentLoaded', () => {
         "Media Suppression": "#bb00ff" // Deep Purple
     };
 
+    // Cache of fetched issues
+    let currentFetchedIssues = [];
+
     // Fetch live issues from API (with fallback to mock data)
     async function loadLiveIssues() {
         try {
@@ -55,6 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (res.ok) {
                 const liveData = await res.json();
                 if (Array.isArray(liveData) && liveData.length > 0) {
+                    currentFetchedIssues = liveData;
                     renderIssues(liveData);
                     return;
                 }
@@ -62,20 +66,30 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (e) {
             console.log("Using local mock issues fallback");
         }
+        currentFetchedIssues = mockIssues;
         renderIssues(mockIssues);
     }
 
     // Render Issues
     function renderIssues(issuesList = mockIssues) {
         issuesContainer.innerHTML = '';
+        if (issuesList.length === 0) {
+            issuesContainer.innerHTML = `<div style="text-align: center; padding: 40px; color: #888;">No news or reports found matching your criteria.</div>`;
+            return;
+        }
+
         issuesList.forEach((issue, index) => {
-            const delay = index * 0.05; // Staggered animation
+            const delay = index * 0.03; // Staggered animation
             
             const card = document.createElement('div');
             card.className = 'issue-card glass-panel';
             card.style.animationDelay = `${delay}s`;
             
             const tagBg = categoryColors[issue.category] || "#00ffcc";
+            const targetUrl = issue.sourceUrl || '#';
+            const titleHtml = issue.sourceUrl 
+                ? `<a href="${issue.sourceUrl}" target="_blank" rel="noopener noreferrer" class="issue-title-link">${issue.title} <i class="fa-solid fa-arrow-up-right-from-square" style="font-size: 0.8rem; margin-left: 5px;"></i></a>`
+                : issue.title;
 
             card.innerHTML = `
                 <div class="upvote-col">
@@ -92,7 +106,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <span class="location"><i class="fa-solid fa-location-dot"></i> ${issue.location || "National"}</span>
                         <span class="time"><i class="fa-solid fa-clock"></i> ${issue.created_at ? new Date(issue.created_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) : 'Live'}</span>
                     </div>
-                    <h3 class="issue-title">${issue.title}</h3>
+                    <h3 class="issue-title">${titleHtml}</h3>
                     <p class="issue-desc">${issue.description}</p>
                 </div>
             `;
@@ -114,6 +128,65 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // Live Search Functionality
+    const searchInput = document.getElementById('search-input');
+    if (searchInput) {
+        searchInput.addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase().trim();
+            if (!query) {
+                renderIssues(currentFetchedIssues);
+                return;
+            }
+            const filtered = currentFetchedIssues.filter(item => 
+                (item.title && item.title.toLowerCase().includes(query)) ||
+                (item.description && item.description.toLowerCase().includes(query)) ||
+                (item.category && item.category.toLowerCase().includes(query)) ||
+                (item.location && item.location.toLowerCase().includes(query))
+            );
+            renderIssues(filtered);
+        });
+    }
+
+    // Navigation Sidebar & Filter Buttons
+    const navFeed = document.getElementById('nav-feed');
+    const navTrending = document.getElementById('nav-trending');
+    const navCategories = document.getElementById('nav-categories');
+    const filterBtns = document.querySelectorAll('.filter-btn');
+
+    if (navTrending) {
+        navTrending.addEventListener('click', () => {
+            document.querySelectorAll('.nav-links li').forEach(el => el.classList.remove('active'));
+            navTrending.classList.add('active');
+            const sortedByUpvotes = [...currentFetchedIssues].sort((a, b) => (b.upvotes || 0) - (a.upvotes || 0));
+            renderIssues(sortedByUpvotes);
+        });
+    }
+
+    if (navCategories) {
+        navCategories.addEventListener('click', () => {
+            document.querySelectorAll('.nav-links li').forEach(el => el.classList.remove('active'));
+            navCategories.classList.add('active');
+            // Quick prompt/filter by category
+            const categories = ["Corruption", "Electoral Fraud", "Human Rights", "Media Suppression"];
+            const selected = categories[Math.floor(Math.random() * categories.length)];
+            const filtered = currentFetchedIssues.filter(i => i.category === selected);
+            renderIssues(filtered);
+        });
+    }
+
+    filterBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            filterBtns.forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            if (this.textContent.includes('Most Upvoted')) {
+                const sorted = [...currentFetchedIssues].sort((a, b) => (b.upvotes || 0) - (a.upvotes || 0));
+                renderIssues(sorted);
+            } else {
+                renderIssues(currentFetchedIssues);
+            }
+        });
+    });
+
     // Modal Logic
     openModalBtn.addEventListener('click', () => {
         reportModal.classList.add('active');
@@ -123,17 +196,14 @@ document.addEventListener('DOMContentLoaded', () => {
         reportModal.classList.remove('active');
     });
 
-    // Close modal on outside click
     reportModal.addEventListener('click', (e) => {
         if (e.target === reportModal) {
             reportModal.classList.remove('active');
         }
     });
 
-    // Form Submission
     reportForm.addEventListener('submit', (e) => {
         e.preventDefault();
-        
         const title = document.getElementById('issue-title').value;
         const catSelect = document.getElementById('issue-category');
         const category = catSelect.options[catSelect.selectedIndex].text;
@@ -150,17 +220,15 @@ document.addEventListener('DOMContentLoaded', () => {
             created_at: new Date().toISOString()
         };
 
-        mockIssues.unshift(newIssue);
-        loadLiveIssues();
-        
+        currentFetchedIssues.unshift(newIssue);
+        renderIssues(currentFetchedIssues);
         reportModal.classList.remove('active');
         reportForm.reset();
     });
 
     // Initial Load
     loadLiveIssues();
-
-    // Auto-update UI every 30 seconds to show freshly crawled news continuously
     setInterval(loadLiveIssues, 30000);
 });
+
 
