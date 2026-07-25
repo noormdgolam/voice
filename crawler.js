@@ -194,6 +194,12 @@ function startAutoCrawler(intervalMinutes = 2) {
     console.log(`[Crawler] Continuous background crawler active (Runs every ${intervalMinutes} mins).`);
 }
 
+function clearNews() {
+    crawledIssues = [];
+    console.log('[Crawler] All stored news articles cleared.');
+    return [];
+}
+
 function getCrawledIssues() {
     return crawledIssues;
 }
@@ -201,6 +207,7 @@ function getCrawledIssues() {
 module.exports = {
     startAutoCrawler,
     fetchNews,
-    getCrawledIssues
+    getCrawledIssues,
+    clearNews
 };
 

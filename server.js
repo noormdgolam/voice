@@ -37,6 +37,12 @@ const crawler = require('./crawler');
 crawler.startAutoCrawler(2);
 
 
+// DELETE all stored news articles endpoint
+app.delete('/api/issues', (req, res) => {
+    crawler.clearNews();
+    res.json({ success: true, message: 'All stored news articles have been cleared.' });
+});
+
 // GET all issues (combines database & freshly crawled news)
 app.get('/api/issues', async (req, res) => {
     let dbIssues = [];

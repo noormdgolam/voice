@@ -9,62 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const reportModal = document.getElementById('report-modal');
     const reportForm = document.getElementById('report-form');
 
-    const mockIssues = [
-        {
-            id: 101,
-            title: "হাইকোর্টের নির্দেশে দুর্নীতির মামলার পুনস্তদন্ত শুরু করেছে দুদক",
-            description: "অবৈধ সম্পদ অর্জন ও পাচারের অভিযোগে গঠিত তদন্ত কমিটিকে চার সপ্তাহের মধ্যে বিবরণী জমা দেওয়ার আদেশ নির্দেশ প্রদান করেছে বিজ্ঞ আদালত।",
-            category: "Corruption",
-            location: "ঢাকা, বাংলাদেশ",
-            upvotes: 2450,
-            created_at: new Date().toISOString()
-        },
-        {
-            id: 102,
-            title: "নির্বাচন ব্যবস্থার সার্বিক সংস্কার ও ভোটার তালিকা হালনাগাদের ঘোষণা",
-            description: "স্বচ্ছতা সুনিশ্চিত করতে সকল আসনে ইলেকট্রনিক ভোটার ভেরিফিকেশন ও বায়োমেট্রিক নজরদারি চালুর দাবি জানিয়েছেন সুশীল সমাজের প্রতিনিধিরা।",
-            category: "Electoral Fraud",
-            location: "জাতীয়",
-            upvotes: 3890,
-            created_at: new Date().toISOString()
-        },
-        {
-            id: 103,
-            title: "ডিজিটাল নিরাপত্তা আইনের মামলায় গ্রেফতার সাংবাদিকদের মুক্তির দাবী",
-            description: "সংবাদপত্রের স্বাধীনতা ও বাকস্বাধীনতা রক্ষার দাবিতে আন্তর্জাতিক মানবাধিকার সংস্থাগুলো যৌথ বিবৃতি প্রদান করেছে।",
-            category: "Media Suppression",
-            location: "ঢাকা",
-            upvotes: 4120,
-            created_at: new Date().toISOString()
-        },
-        {
-            id: 104,
-            title: "মূল্যস্ফীতি নিয়ন্ত্রণে কেন্দ্রীয় ব্যাংকের নতুন নীতি ঘোষণা",
-            description: "নিত্যপ্রয়োজনীয় পণ্যের বাজার স্থিতিশীল রাখতে আমদানি শুল্ক ছাড় ও বাণিজ্যিক ব্যাংকগুলোর জন্য বিশেষ নির্দেশিকা জারি।",
-            category: "Economy & Trade",
-            location: "চট্টগ্রাম",
-            upvotes: 1850,
-            created_at: new Date().toISOString()
-        },
-        {
-            id: 1,
-            title: "Massive Embezzlement in Mega-Project Funds",
-            description: "Investigations reveal that over 40% of the allocated budget for the new transit system has been siphoned off through ghost contractors.",
-            category: "Corruption",
-            location: "Capital City",
-            upvotes: 1405,
-            created_at: new Date().toISOString()
-        },
-        {
-            id: 2,
-            title: "Student Protesters Detained Without Trial",
-            description: "Over 50 university students who participated in peaceful protests have been held without legal representation.",
-            category: "Human Rights",
-            location: "University Area",
-            upvotes: 5210,
-            created_at: new Date().toISOString()
-        }
-    ];
+    const mockIssues = [];
 
 
 
