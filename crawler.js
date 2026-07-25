@@ -4,13 +4,14 @@
 const Parser = require('rss-parser');
 const parser = new Parser();
 
-// Authentic Verified RSS News Feeds (BBC, Reuters, Al Jazeera, Daily Star, etc.)
+// Authentic Bangladesh News RSS Feeds & Google News Bangladesh
 const RSS_FEEDS = [
-    'https://feeds.bbci.co.uk/news/world/asia/rss.xml',
-    'https://www.aljazeera.com/xml/rss/all.xml',
     'https://www.thedailystar.net/news/bangladesh/rss.xml',
-    'https://news.google.com/rss/search?q=bangladesh+protest+corruption+rights&hl=en-US&gl=US&ceid=US:en'
+    'https://news.google.com/rss/search?q=bangladesh+news&hl=en-US&gl=US&ceid=US:en',
+    'https://news.google.com/rss/search?q=bangladesh+government+protest+economy&hl=en-US&gl=US&ceid=US:en',
+    'https://news.google.com/rss/search?q=bangladesh+court+police+rights&hl=en-US&gl=US&ceid=US:en'
 ];
+
 
 
 
@@ -36,24 +37,28 @@ let crawledIssues = [
     }
 ];
 
-// Categorization helper based on keywords
+// Categorization helper based on keywords for Bangladesh news
 function categorizeArticle(title = '', snippet = '') {
     const text = (title + ' ' + snippet).toLowerCase();
     
-    if (text.includes('corruption') || text.includes('bribe') || text.includes('embezzl') || text.includes('fund') || text.includes('money')) {
+    if (text.includes('corruption') || text.includes('bribe') || text.includes('embezzl') || text.includes('fund') || text.includes('money') || text.includes('scam') || text.includes('bank')) {
         return "Corruption";
     }
-    if (text.includes('election') || text.includes('vote') || text.includes('ballot') || text.includes('fraud') || text.includes('poll')) {
+    if (text.includes('election') || text.includes('vote') || text.includes('ballot') || text.includes('fraud') || text.includes('poll') || text.includes('candidate')) {
         return "Electoral Fraud";
     }
-    if (text.includes('protest') || text.includes('rights') || text.includes('police') || text.includes('detain') || text.includes('arrest') || text.includes('student')) {
-        return "Human Rights";
-    }
-    if (text.includes('media') || text.includes('press') || text.includes('censor') || text.includes('journal') || text.includes('ban')) {
+    if (text.includes('media') || text.includes('press') || text.includes('censor') || text.includes('journal') || text.includes('ban') || text.includes('news')) {
         return "Media Suppression";
     }
-    return "Human Rights"; // Default fallthrough category
+    if (text.includes('economy') || text.includes('inflation') || text.includes('price') || text.includes('export') || text.includes('garment') || text.includes('remi')) {
+        return "Economy & Trade";
+    }
+    if (text.includes('court') || text.includes('verdict') || text.includes('justice') || text.includes('law') || text.includes('police') || text.includes('arrest') || text.includes('crime')) {
+        return "Law & Crime";
+    }
+    return "Human Rights"; // Default category
 }
+
 
 // Perform a single crawl cycle
 async function fetchNews() {
