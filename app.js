@@ -11,9 +11,45 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const mockIssues = [
         {
+            id: 101,
+            title: "হাইকোর্টের নির্দেশে দুর্নীতির মামলার পুনস্তদন্ত শুরু করেছে দুদক",
+            description: "অবৈধ সম্পদ অর্জন ও পাচারের অভিযোগে গঠিত তদন্ত কমিটিকে চার সপ্তাহের মধ্যে বিবরণী জমা দেওয়ার আদেশ নির্দেশ প্রদান করেছে বিজ্ঞ আদালত।",
+            category: "Corruption",
+            location: "ঢাকা, বাংলাদেশ",
+            upvotes: 2450,
+            created_at: new Date().toISOString()
+        },
+        {
+            id: 102,
+            title: "নির্বাচন ব্যবস্থার সার্বিক সংস্কার ও ভোটার তালিকা হালনাগাদের ঘোষণা",
+            description: "স্বচ্ছতা সুনিশ্চিত করতে সকল আসনে ইলেকট্রনিক ভোটার ভেরিফিকেশন ও বায়োমেট্রিক নজরদারি চালুর দাবি জানিয়েছেন সুশীল সমাজের প্রতিনিধিরা।",
+            category: "Electoral Fraud",
+            location: "জাতীয়",
+            upvotes: 3890,
+            created_at: new Date().toISOString()
+        },
+        {
+            id: 103,
+            title: "ডিজিটাল নিরাপত্তা আইনের মামলায় গ্রেফতার সাংবাদিকদের মুক্তির দাবী",
+            description: "সংবাদপত্রের স্বাধীনতা ও বাকস্বাধীনতা রক্ষার দাবিতে আন্তর্জাতিক মানবাধিকার সংস্থাগুলো যৌথ বিবৃতি প্রদান করেছে।",
+            category: "Media Suppression",
+            location: "ঢাকা",
+            upvotes: 4120,
+            created_at: new Date().toISOString()
+        },
+        {
+            id: 104,
+            title: "মূল্যস্ফীতি নিয়ন্ত্রণে কেন্দ্রীয় ব্যাংকের নতুন নীতি ঘোষণা",
+            description: "নিত্যপ্রয়োজনীয় পণ্যের বাজার স্থিতিশীল রাখতে আমদানি শুল্ক ছাড় ও বাণিজ্যিক ব্যাংকগুলোর জন্য বিশেষ নির্দেশিকা জারি।",
+            category: "Economy & Trade",
+            location: "চট্টগ্রাম",
+            upvotes: 1850,
+            created_at: new Date().toISOString()
+        },
+        {
             id: 1,
             title: "Massive Embezzlement in Mega-Project Funds",
-            description: "Investigations reveal that over 40% of the allocated budget for the new transit system has been siphoned off through ghost contractors. The structural integrity of the project is now compromised.",
+            description: "Investigations reveal that over 40% of the allocated budget for the new transit system has been siphoned off through ghost contractors.",
             category: "Corruption",
             location: "Capital City",
             upvotes: 1405,
@@ -21,86 +57,15 @@ document.addEventListener('DOMContentLoaded', () => {
         },
         {
             id: 2,
-            title: "Midnight Ballot Stuffing Caught on Camera",
-            description: "CCTV footage from polling center #42 clearly shows ruling party affiliates stuffing ballot boxes hours before the official voting commenced. The presiding officer was complicit.",
-            category: "Electoral Fraud",
-            location: "District 9",
-            upvotes: 3892,
-            created_at: new Date().toISOString()
-        },
-        {
-            id: 3,
             title: "Student Protesters Detained Without Trial",
-            description: "Over 50 university students who participated in the peaceful quota reform protests have been held in undisclosed locations for the past 72 hours without legal representation.",
+            description: "Over 50 university students who participated in peaceful protests have been held without legal representation.",
             category: "Human Rights",
-            location: "University Campus Area",
+            location: "University Area",
             upvotes: 5210,
-            created_at: new Date().toISOString()
-        },
-        {
-            id: 4,
-            title: "Independent Newspaper Website Blocked Nationally",
-            description: "Telecommunication regulators have blacklisted three independent digital investigative news portals without issuing any formal legal notice or court order.",
-            category: "Media Suppression",
-            location: "National",
-            upvotes: 2740,
-            created_at: new Date().toISOString()
-        },
-        {
-            id: 5,
-            title: "Healthcare Equipment Procurement Price Inflation Scam",
-            description: "Hospital ICU ventilators bought at 500% market price markup through non-existent shell companies directly tied to regional health administrators.",
-            category: "Corruption",
-            location: "Chittagong",
-            upvotes: 1980,
-            created_at: new Date().toISOString()
-        },
-        {
-            id: 6,
-            title: "Voter Roll Tampering Discovered in Municipal Election",
-            description: "Over 12,000 legitimate resident voters were erased from local electoral rolls while deceased individuals were registered under active voting IDs.",
-            category: "Electoral Fraud",
-            location: "Sylhet",
-            upvotes: 3110,
-            created_at: new Date().toISOString()
-        },
-        {
-            id: 7,
-            title: "Police Crackdown on Peaceful Labor Rights March",
-            description: "Security forces deployed teargas and rubber bullets against garment factory workers striking for unpaid minimum wage bonuses.",
-            category: "Human Rights",
-            location: "Gazipur Industrial Zone",
-            upvotes: 4520,
-            created_at: new Date().toISOString()
-        },
-        {
-            id: 8,
-            title: "Investigative Journalist Arrested Under Cyber Security Act",
-            description: "Award-winning reporter taken into custody after publishing report exposing illegal sand mining operations controlled by political elites.",
-            category: "Media Suppression",
-            location: "Rajshahi",
-            upvotes: 3870,
-            created_at: new Date().toISOString()
-        },
-        {
-            id: 9,
-            title: "Bridge Construction Collapses 3 Months After Inauguration",
-            description: "Substandard cement and missing steel rebar lead to structural collapse of newly built river bridge, isolating 15 villages.",
-            category: "Corruption",
-            location: "Barisal",
-            upvotes: 2490,
-            created_at: new Date().toISOString()
-        },
-        {
-            id: 10,
-            title: "Broadband Internet Blackout Imposed During Anti-Government Rally",
-            description: "Mobile 4G and home broadband connections throttled to sub-dialup speeds across major urban centers to prevent live streaming of protests.",
-            category: "Media Suppression",
-            location: "Dhaka Central",
-            upvotes: 6100,
             created_at: new Date().toISOString()
         }
     ];
+
 
 
     // Colors mapping for tags (Revolutionary Theme)
