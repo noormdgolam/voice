@@ -9,7 +9,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const reportModal = document.getElementById('report-modal');
     const reportForm = document.getElementById('report-form');
 
-    // Mock Data for Initial UI Render
     const mockIssues = [
         {
             id: 1,
@@ -18,7 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
             category: "Corruption",
             location: "Capital City",
             upvotes: 1405,
-            tagClass: "tag-corruption"
+            created_at: new Date().toISOString()
         },
         {
             id: 2,
@@ -27,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
             category: "Electoral Fraud",
             location: "District 9",
             upvotes: 3892,
-            tagClass: "tag-fraud"
+            created_at: new Date().toISOString()
         },
         {
             id: 3,
@@ -36,9 +35,73 @@ document.addEventListener('DOMContentLoaded', () => {
             category: "Human Rights",
             location: "University Campus Area",
             upvotes: 5210,
-            tagClass: "tag-rights"
+            created_at: new Date().toISOString()
+        },
+        {
+            id: 4,
+            title: "Independent Newspaper Website Blocked Nationally",
+            description: "Telecommunication regulators have blacklisted three independent digital investigative news portals without issuing any formal legal notice or court order.",
+            category: "Media Suppression",
+            location: "National",
+            upvotes: 2740,
+            created_at: new Date().toISOString()
+        },
+        {
+            id: 5,
+            title: "Healthcare Equipment Procurement Price Inflation Scam",
+            description: "Hospital ICU ventilators bought at 500% market price markup through non-existent shell companies directly tied to regional health administrators.",
+            category: "Corruption",
+            location: "Chittagong",
+            upvotes: 1980,
+            created_at: new Date().toISOString()
+        },
+        {
+            id: 6,
+            title: "Voter Roll Tampering Discovered in Municipal Election",
+            description: "Over 12,000 legitimate resident voters were erased from local electoral rolls while deceased individuals were registered under active voting IDs.",
+            category: "Electoral Fraud",
+            location: "Sylhet",
+            upvotes: 3110,
+            created_at: new Date().toISOString()
+        },
+        {
+            id: 7,
+            title: "Police Crackdown on Peaceful Labor Rights March",
+            description: "Security forces deployed teargas and rubber bullets against garment factory workers striking for unpaid minimum wage bonuses.",
+            category: "Human Rights",
+            location: "Gazipur Industrial Zone",
+            upvotes: 4520,
+            created_at: new Date().toISOString()
+        },
+        {
+            id: 8,
+            title: "Investigative Journalist Arrested Under Cyber Security Act",
+            description: "Award-winning reporter taken into custody after publishing report exposing illegal sand mining operations controlled by political elites.",
+            category: "Media Suppression",
+            location: "Rajshahi",
+            upvotes: 3870,
+            created_at: new Date().toISOString()
+        },
+        {
+            id: 9,
+            title: "Bridge Construction Collapses 3 Months After Inauguration",
+            description: "Substandard cement and missing steel rebar lead to structural collapse of newly built river bridge, isolating 15 villages.",
+            category: "Corruption",
+            location: "Barisal",
+            upvotes: 2490,
+            created_at: new Date().toISOString()
+        },
+        {
+            id: 10,
+            title: "Broadband Internet Blackout Imposed During Anti-Government Rally",
+            description: "Mobile 4G and home broadband connections throttled to sub-dialup speeds across major urban centers to prevent live streaming of protests.",
+            category: "Media Suppression",
+            location: "Dhaka Central",
+            upvotes: 6100,
+            created_at: new Date().toISOString()
         }
     ];
+
 
     // Colors mapping for tags (Revolutionary Theme)
     const categoryColors = {
