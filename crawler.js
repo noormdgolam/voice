@@ -8,9 +8,10 @@ const parser = new Parser();
 const RSS_FEEDS = [
     // Top Bangladesh Newspapers (National & Bangla)
     'https://www.prothomalo.com/feed',
-    'https://www.thedailystar.net/news/bangladesh/rss.xml',
+    'https://news.google.com/rss/search?q=site:thedailystar.net+bangladesh&hl=en-US&gl=US&ceid=US:en',
     'https://news.google.com/rss/search?q=bangladesh+news&hl=bn&gl=BD&ceid=BD:bn', // Google News Bangla
     'https://news.google.com/rss/search?q=bangladesh+news&hl=en-US&gl=US&ceid=US:en',
+
     
     // International Sector News
     'https://feeds.bbci.co.uk/news/world/rss.xml',
