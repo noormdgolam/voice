@@ -121,6 +121,9 @@ document.addEventListener('DOMContentLoaded', () => {
             if (res.ok) {
                 const liveData = await res.json();
                 if (Array.isArray(liveData) && liveData.length > 0) {
+                    // Check if new items arrived
+                    const hasNewItems = liveData.length !== currentFetchedIssues.length || 
+                                       (liveData[0] && currentFetchedIssues[0] && liveData[0].id !== currentFetchedIssues[0].id);
                     currentFetchedIssues = liveData;
                     renderIssues(liveData);
                     return;
@@ -129,9 +132,12 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (e) {
             console.log("Using local mock issues fallback");
         }
-        currentFetchedIssues = mockIssues;
-        renderIssues(mockIssues);
+        if (currentFetchedIssues.length === 0) {
+            currentFetchedIssues = mockIssues;
+            renderIssues(mockIssues);
+        }
     }
+
 
     // Render Issues
     function renderIssues(issuesList = mockIssues) {
