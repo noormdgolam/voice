@@ -23,27 +23,9 @@ const RSS_FEEDS = [
 
 
 
-// In-memory cache of crawled issues (used when DB connection is not configured yet)
-let crawledIssues = [
-    {
-        id: "crawl-1",
-        title: "Anti-Corruption Commission Investigates High-Level Money Laundering",
-        description: "Official inquiries opened into multiple offshore bank accounts linked to high-profile infrastructure projects.",
-        category: "Corruption",
-        location: "Dhaka",
-        upvotes: 412,
-        created_at: new Date().toISOString()
-    },
-    {
-        id: "crawl-2",
-        title: "Electoral Reform Advocates Demand Independent Election Commission",
-        description: "Civil society groups submit formal demands for complete oversight and biometric polling transparency in upcoming elections.",
-        category: "Electoral Fraud",
-        location: "National",
-        upvotes: 890,
-        created_at: new Date().toISOString()
-    }
-];
+// In-memory cache of crawled issues (populated live by RSS feeds)
+let crawledIssues = [];
+
 
 // Categorization helper with support for International sector and Bangla keywords
 function categorizeArticle(title = '', snippet = '', feedUrl = '') {
