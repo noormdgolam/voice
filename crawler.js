@@ -4,13 +4,20 @@
 const Parser = require('rss-parser');
 const parser = new Parser();
 
-// Authentic Bangladesh News RSS Feeds & Google News Bangladesh
+// Multi-Source RSS News Feeds (National Newspapers & International Outlets)
 const RSS_FEEDS = [
+    // Top Bangladesh Newspapers (National & Bangla)
+    'https://www.prothomalo.com/feed',
     'https://www.thedailystar.net/news/bangladesh/rss.xml',
+    'https://news.google.com/rss/search?q=bangladesh+news&hl=bn&gl=BD&ceid=BD:bn', // Google News Bangla
     'https://news.google.com/rss/search?q=bangladesh+news&hl=en-US&gl=US&ceid=US:en',
-    'https://news.google.com/rss/search?q=bangladesh+government+protest+economy&hl=en-US&gl=US&ceid=US:en',
-    'https://news.google.com/rss/search?q=bangladesh+court+police+rights&hl=en-US&gl=US&ceid=US:en'
+    
+    // International Sector News
+    'https://feeds.bbci.co.uk/news/world/rss.xml',
+    'https://www.aljazeera.com/xml/rss/all.xml',
+    'https://news.google.com/rss/search?q=world+news+international&hl=en-US&gl=US&ceid=US:en'
 ];
+
 
 
 
@@ -37,27 +44,38 @@ let crawledIssues = [
     }
 ];
 
-// Categorization helper based on keywords for Bangladesh news
-function categorizeArticle(title = '', snippet = '') {
+// Categorization helper with support for International sector and Bangla keywords
+function categorizeArticle(title = '', snippet = '', feedUrl = '') {
     const text = (title + ' ' + snippet).toLowerCase();
     
-    if (text.includes('corruption') || text.includes('bribe') || text.includes('embezzl') || text.includes('fund') || text.includes('money') || text.includes('scam') || text.includes('bank')) {
+    // Check if feed is international news
+    if (feedUrl.includes('world') || feedUrl.includes('bbci.co.uk') || feedUrl.includes('aljazeera.com')) {
+        if (!text.includes('bangladesh')) {
+            return "International";
+        }
+    }
+
+    if (text.includes('corruption') || text.includes('bribe') || text.includes('embezzl') || text.includes('fund') || text.includes('money') || text.includes('scam') || text.includes('bank') || text.includes('দুর্নীতি') || text.includes('ঘুষ') || text.includes('অর্থ')) {
         return "Corruption";
     }
-    if (text.includes('election') || text.includes('vote') || text.includes('ballot') || text.includes('fraud') || text.includes('poll') || text.includes('candidate')) {
+    if (text.includes('election') || text.includes('vote') || text.includes('ballot') || text.includes('fraud') || text.includes('poll') || text.includes('candidate') || text.includes('নির্বাচন') || text.includes('ভোট')) {
         return "Electoral Fraud";
     }
-    if (text.includes('media') || text.includes('press') || text.includes('censor') || text.includes('journal') || text.includes('ban') || text.includes('news')) {
+    if (text.includes('media') || text.includes('press') || text.includes('censor') || text.includes('journal') || text.includes('ban') || text.includes('news') || text.includes('গণমাধ্যম') || text.includes('সাংবাদিক')) {
         return "Media Suppression";
     }
-    if (text.includes('economy') || text.includes('inflation') || text.includes('price') || text.includes('export') || text.includes('garment') || text.includes('remi')) {
+    if (text.includes('economy') || text.includes('inflation') || text.includes('price') || text.includes('export') || text.includes('garment') || text.includes('remi') || text.includes('অর্থনীতি') || text.includes('দাম')) {
         return "Economy & Trade";
     }
-    if (text.includes('court') || text.includes('verdict') || text.includes('justice') || text.includes('law') || text.includes('police') || text.includes('arrest') || text.includes('crime')) {
+    if (text.includes('court') || text.includes('verdict') || text.includes('justice') || text.includes('law') || text.includes('police') || text.includes('arrest') || text.includes('crime') || text.includes('আদালত') || text.includes('পুলিশ') || text.includes('গ্রেপ্তার')) {
         return "Law & Crime";
     }
-    return "Human Rights"; // Default category
+    if (text.includes('world') || text.includes('global') || text.includes('international') || text.includes('us') || text.includes('china') || text.includes('uk') || text.includes('international') || text.includes('আন্তর্জাতিক')) {
+        return "International";
+    }
+    return "Human Rights";
 }
+
 
 
 // Perform a single crawl cycle
@@ -72,7 +90,8 @@ async function fetchNews() {
                 // Check if already exists in cache
                 const exists = crawledIssues.some(existing => existing.title === item.title);
                 if (!exists) {
-                    const category = categorizeArticle(item.title, item.contentSnippet);
+                    const category = categorizeArticle(item.title, item.contentSnippet, feedUrl);
+
                     
                     // Extract publisher domain for authenticity badge
                     let publisher = "Verified News";

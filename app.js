@@ -108,8 +108,12 @@ document.addEventListener('DOMContentLoaded', () => {
         "Corruption": "#ff0055", // Magenta
         "Electoral Fraud": "#ffaa00", // Warning Orange
         "Human Rights": "#00ffcc", // Neon Cyan
-        "Media Suppression": "#bb00ff" // Deep Purple
+        "Media Suppression": "#bb00ff", // Deep Purple
+        "Economy & Trade": "#0099ff", // Electric Blue
+        "Law & Crime": "#ff3300", // Bright Red
+        "International": "#33cc33" // Global Emerald Green
     };
+
 
     // Cache of fetched issues
     let currentFetchedIssues = [];
