@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voice - Citizen Reporting Platform</title>
+    
+    <!-- SEO Best Practices -->
+    <meta name="description" content="Report, track, and categorize socio-political issues, corruption, and human rights violations securely.">
+    <meta name="theme-color" content="#0a0a0f">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    
+    <!-- Animated Background Gradients -->
+    <div class="bg-gradient bg-grad-1"></div>
+    <div class="bg-gradient bg-grad-2"></div>
+    
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <nav class="sidebar glass-panel">
+            <div class="logo">
+                <i class="fa-solid fa-bullhorn neon-text"></i>
+                <h1>VOICE.</h1>
+            </div>
+            
+            <ul class="nav-links">
+                <li class="active" id="nav-feed"><i class="fa-solid fa-layer-group"></i> Feed</li>
+                <li id="nav-trending"><i class="fa-solid fa-fire"></i> Trending</li>
+                <li id="nav-categories"><i class="fa-solid fa-tags"></i> Categories</li>
+            </ul>
+            
+            <button class="btn-primary report-btn" id="open-report-modal">
+                <i class="fa-solid fa-plus"></i> Report Issue
+            </button>
+        </nav>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <header class="topbar">
+                <div class="search-bar glass-panel">
+                    <i class="fa-solid fa-search"></i>
+                    <input type="text" placeholder="Search issues, locations, or tags...">
+                </div>
+                <div class="user-profile">
+                    <div class="avatar"><i class="fa-solid fa-user"></i></div>
+                </div>
+            </header>
+
+            <div class="content-header">
+                <h2>Live Feed</h2>
+                <div class="filters">
+                    <button class="filter-btn active">Latest</button>
+                    <button class="filter-btn">Most Upvoted</button>
+                </div>
+            </div>
+
+            <!-- Issues Feed Container -->
+            <div class="issues-feed" id="issues-container">
+                <!-- Issues will be dynamically injected here via JS -->
+            </div>
+        </main>
+    </div>
+
+    <!-- Report Issue Modal -->
+    <div class="modal-overlay" id="report-modal">
+        <div class="modal-content glass-panel">
+            <button class="close-modal" id="close-modal"><i class="fa-solid fa-xmark"></i></button>
+            <h2>Report an Issue</h2>
+            <form id="report-form">
+                <div class="form-group">
+                    <label for="issue-title">Title</label>
+                    <input type="text" id="issue-title" required placeholder="Brief description of the issue">
+                </div>
+                
+                <div class="form-group">
+                    <label for="issue-category">Category</label>
+                    <select id="issue-category" required>
+                        <option value="1">Corruption</option>
+                        <option value="2">Human Rights</option>
+                        <option value="3">Electoral Fraud</option>
+                        <option value="4">Media Suppression</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="issue-location">Location</label>
+                    <input type="text" id="issue-location" required placeholder="City, District, or specific area">
+                </div>
+
+                <div class="form-group">
+                    <label for="issue-desc">Details</label>
+                    <textarea id="issue-desc" rows="5" required placeholder="Provide as much detail as possible..."></textarea>
+                </div>
+
+                <button type="submit" class="btn-primary w-100">Submit Report</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+    <script>
+        // Register Service Worker for PWA
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js')
+                    .then(reg => console.log('Service Worker registered'))
+                    .catch(err => console.log('Service Worker registration failed:', err));
+            });
+        }
+    </script>
+</body>
+</html>
