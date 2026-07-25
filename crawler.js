@@ -4,19 +4,76 @@
 const Parser = require('rss-parser');
 const parser = new Parser();
 
-// Multi-Source RSS News Feeds (National Newspapers & International Outlets)
+// Multi-Source News Feeds Directory (Loaded from news_sources_directory.xlsx)
 const RSS_FEEDS = [
-    // Top Bangladesh Newspapers (National & Bangla)
+    // 1. Prothom Alo (Bangla & English)
     'https://www.prothomalo.com/feed',
-    'https://news.google.com/rss/search?q=site:thedailystar.net+bangladesh&hl=en-US&gl=US&ceid=US:en',
-    'https://news.google.com/rss/search?q=bangladesh+news&hl=bn&gl=BD&ceid=BD:bn', // Google News Bangla
-    'https://news.google.com/rss/search?q=bangladesh+news&hl=en-US&gl=US&ceid=US:en',
+    'https://en.prothomalo.com/feed',
 
-    
-    // International Sector News
+    // 2. The Daily Star (English)
+    'https://www.thedailystar.net/frontpage/rss.xml',
+    'https://news.google.com/rss/search?q=site:thedailystar.net&hl=en-US&gl=US&ceid=US:en',
+
+    // 3. bdnews24.com (Bilingual)
+    'https://bdnews24.com/rss.xml',
+    'https://bangla.bdnews24.com/rss.xml',
+
+    // 4. Dhaka Tribune (English)
+    'https://www.dhakatribune.com/feed',
+    'https://news.google.com/rss/search?q=site:dhakatribune.com&hl=en-US&gl=US&ceid=US:en',
+
+    // 5. Bangladesh Pratidin (Highest print-circulated daily)
+    'https://news.google.com/rss/search?q=site:bd-pratidin.com&hl=bn&gl=BD&ceid=BD:bn',
+
+    // 6. Kaler Kantho
+    'https://news.google.com/rss/search?q=site:kalerkantho.com&hl=bn&gl=BD&ceid=BD:bn',
+
+    // 7. Jugantor
+    'https://news.google.com/rss/search?q=site:jugantor.com&hl=bn&gl=BD&ceid=BD:bn',
+
+    // 8. Ittefaq
+    'https://news.google.com/rss/search?q=site:ittefaq.com.bd&hl=bn&gl=BD&ceid=BD:bn',
+
+    // 9. Samakal
+    'https://news.google.com/rss/search?q=site:samakal.com&hl=bn&gl=BD&ceid=BD:bn',
+
+    // 10. Bangla Tribune
+    'https://news.google.com/rss/search?q=site:banglatribune.com&hl=bn&gl=BD&ceid=BD:bn',
+
+    // 11. Jago News 24
+    'https://news.google.com/rss/search?q=site:jagonews24.com&hl=bn&gl=BD&ceid=BD:bn',
+
+    // 12. Banglanews24
+    'https://news.google.com/rss/search?q=site:banglanews24.com&hl=bn&gl=BD&ceid=BD:bn',
+
+    // 13. Daily Inqilab
+    'https://news.google.com/rss/search?q=site:dailyinqilab.com&hl=bn&gl=BD&ceid=BD:bn',
+
+    // 14. Manab Zamin
+    'https://news.google.com/rss/search?q=site:mzamin.com&hl=bn&gl=BD&ceid=BD:bn',
+
+    // 15. Naya Diganta
+    'https://news.google.com/rss/search?q=site:dailynayadiganta.com&hl=bn&gl=BD&ceid=BD:bn',
+
+    // 16. Amader Shomoy
+    'https://news.google.com/rss/search?q=site:dainikamadershomoy.com&hl=bn&gl=BD&ceid=BD:bn',
+
+    // 17. RTV Online
+    'https://news.google.com/rss/search?q=site:rtvonline.com&hl=bn&gl=BD&ceid=BD:bn',
+
+    // 18. Somoy News
+    'https://news.google.com/rss/search?q=site:somoynews.tv&hl=bn&gl=BD&ceid=BD:bn',
+
+    // 19. New Age
+    'https://news.google.com/rss/search?q=site:newagebd.net&hl=en-US&gl=US&ceid=US:en',
+
+    // 20. The Financial Express (BD) - Economy & Business
+    'https://news.google.com/rss/search?q=site:thefinancialexpress.com.bd&hl=en-US&gl=US&ceid=US:en',
+
+    // 21. BBC Bangla & Global Outlets
+    'https://www.bbc.com/bengali/index.xml',
     'https://feeds.bbci.co.uk/news/world/rss.xml',
-    'https://www.aljazeera.com/xml/rss/all.xml',
-    'https://news.google.com/rss/search?q=world+news+international&hl=en-US&gl=US&ceid=US:en'
+    'https://www.aljazeera.com/xml/rss/all.xml'
 ];
 
 
