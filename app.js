@@ -228,7 +228,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Initial Load
     loadLiveIssues();
-    setInterval(loadLiveIssues, 30000);
+    // Auto-update UI every 10 seconds to fetch newly crawled news continuously
+    setInterval(loadLiveIssues, 10000);
 });
+
 
 

@@ -95,8 +95,8 @@ async function fetchNews() {
     return crawledIssues;
 }
 
-// Start continuous continuous crawling
-function startAutoCrawler(intervalMinutes = 15) {
+// Start continuous background crawling (default 2 minutes)
+function startAutoCrawler(intervalMinutes = 2) {
     // Initial fetch
     fetchNews();
 
@@ -107,6 +107,7 @@ function startAutoCrawler(intervalMinutes = 15) {
     }, intervalMs);
     console.log(`[Crawler] Continuous background crawler active (Runs every ${intervalMinutes} mins).`);
 }
+
 
 function getCrawledIssues() {
     return crawledIssues;

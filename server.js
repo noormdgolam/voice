@@ -33,8 +33,9 @@ app.get('/api/health', (req, res) => {
 // Import Crawler module
 const crawler = require('./crawler');
 
-// Start the continuous background news crawler (crawls every 15 minutes)
-crawler.startAutoCrawler(15);
+// Start the continuous background news crawler (crawls every 2 minutes)
+crawler.startAutoCrawler(2);
+
 
 // GET all issues (combines database & freshly crawled news)
 app.get('/api/issues', async (req, res) => {
