@@ -9,6 +9,10 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 
+// Serve static frontend files (HTML, CSS, JS)
+const path = require('path');
+app.use(express.static(__dirname));
+
 // Database Configuration
 // IMPORTANT: Update these credentials to match your Interserver cPanel MySQL setup
 const dbConfig = {
