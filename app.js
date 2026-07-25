@@ -48,30 +48,49 @@ document.addEventListener('DOMContentLoaded', () => {
         "Media Suppression": "#bb00ff" // Deep Purple
     };
 
+    // Fetch live issues from API (with fallback to mock data)
+    async function loadLiveIssues() {
+        try {
+            const res = await fetch('/api/issues');
+            if (res.ok) {
+                const liveData = await res.json();
+                if (Array.isArray(liveData) && liveData.length > 0) {
+                    renderIssues(liveData);
+                    return;
+                }
+            }
+        } catch (e) {
+            console.log("Using local mock issues fallback");
+        }
+        renderIssues(mockIssues);
+    }
+
     // Render Issues
-    function renderIssues() {
+    function renderIssues(issuesList = mockIssues) {
         issuesContainer.innerHTML = '';
-        mockIssues.forEach((issue, index) => {
-            const delay = index * 0.1; // Staggered animation
+        issuesList.forEach((issue, index) => {
+            const delay = index * 0.05; // Staggered animation
             
             const card = document.createElement('div');
             card.className = 'issue-card glass-panel';
             card.style.animationDelay = `${delay}s`;
             
+            const tagBg = categoryColors[issue.category] || "#00ffcc";
+
             card.innerHTML = `
                 <div class="upvote-col">
                     <button class="upvote-btn" data-id="${issue.id}">
                         <i class="fa-solid fa-chevron-up"></i>
                     </button>
-                    <span class="vote-count">${issue.upvotes.toLocaleString()}</span>
+                    <span class="vote-count">${(issue.upvotes || 0).toLocaleString()}</span>
                 </div>
                 <div class="issue-content">
                     <div class="issue-meta">
-                        <span class="tag" style="background: ${categoryColors[issue.category]}; box-shadow: 0 0 10px ${categoryColors[issue.category]}80;">
-                            ${issue.category}
+                        <span class="tag" style="background: ${tagBg}; box-shadow: 0 0 10px ${tagBg}80;">
+                            ${issue.category || "General"}
                         </span>
-                        <span class="location"><i class="fa-solid fa-location-dot"></i> ${issue.location}</span>
-                        <span class="time"><i class="fa-solid fa-clock"></i> Just now</span>
+                        <span class="location"><i class="fa-solid fa-location-dot"></i> ${issue.location || "National"}</span>
+                        <span class="time"><i class="fa-solid fa-clock"></i> ${issue.created_at ? new Date(issue.created_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) : 'Live'}</span>
                     </div>
                     <h3 class="issue-title">${issue.title}</h3>
                     <p class="issue-desc">${issue.description}</p>
@@ -115,7 +134,6 @@ document.addEventListener('DOMContentLoaded', () => {
     reportForm.addEventListener('submit', (e) => {
         e.preventDefault();
         
-        // In a real app, this would be an API call to Node.js backend
         const title = document.getElementById('issue-title').value;
         const catSelect = document.getElementById('issue-category');
         const category = catSelect.options[catSelect.selectedIndex].text;
@@ -123,25 +141,26 @@ document.addEventListener('DOMContentLoaded', () => {
         const desc = document.getElementById('issue-desc').value;
 
         const newIssue = {
-            id: mockIssues.length + 1,
+            id: 'local-' + Date.now(),
             title: title,
             description: desc,
             category: category,
             location: location,
-            upvotes: 1, // Start with 1 upvote
+            upvotes: 1,
+            created_at: new Date().toISOString()
         };
 
-        mockIssues.unshift(newIssue); // Add to top
-        renderIssues(); // Re-render
+        mockIssues.unshift(newIssue);
+        loadLiveIssues();
         
-        // Close and reset
         reportModal.classList.remove('active');
         reportForm.reset();
-        
-        // Show success (simple alert for now, could be a premium toast)
-        // alert("Report submitted successfully!");
     });
 
-    // Initial Render
-    renderIssues();
+    // Initial Load
+    loadLiveIssues();
+
+    // Auto-update UI every 30 seconds to show freshly crawled news continuously
+    setInterval(loadLiveIssues, 30000);
 });
+

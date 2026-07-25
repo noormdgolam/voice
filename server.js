@@ -30,8 +30,15 @@ app.get('/api/health', (req, res) => {
     res.json({ status: 'ok', message: 'VOICE API is running.' });
 });
 
-// GET all issues
+// Import Crawler module
+const crawler = require('./crawler');
+
+// Start the continuous background news crawler (crawls every 15 minutes)
+crawler.startAutoCrawler(15);
+
+// GET all issues (combines database & freshly crawled news)
 app.get('/api/issues', async (req, res) => {
+    let dbIssues = [];
     try {
         const [rows] = await pool.query(`
             SELECT 
@@ -46,44 +53,14 @@ app.get('/api/issues', async (req, res) => {
             LEFT JOIN categories ON issues.category_id = categories.id
             ORDER BY issues.created_at DESC
         `);
-        res.json(rows);
+        dbIssues = rows;
     } catch (error) {
-        console.error("Database error:", error);
-        res.status(500).json({ error: 'Internal Server Error' });
-    }
-});
-
-// POST a new issue
-app.post('/api/issues', async (req, res) => {
-    const { title, description, category_id, location } = req.body;
-    
-    // Basic validation
-    if (!title || !description || !category_id) {
-        return res.status(400).json({ error: 'Missing required fields' });
+        console.log("Database connection unavailable, falling back to crawled news feed.");
     }
 
-    try {
-        const [result] = await pool.query(
-            'INSERT INTO issues (title, description, category_id, location) VALUES (?, ?, ?, ?)',
-            [title, description, category_id, location]
-        );
-        res.status(201).json({ id: result.insertId, message: 'Issue reported successfully' });
-    } catch (error) {
-        console.error("Database error:", error);
-        res.status(500).json({ error: 'Internal Server Error' });
-    }
-});
-
-// Upvote an issue
-app.post('/api/issues/:id/upvote', async (req, res) => {
-    const issueId = req.params.id;
-    try {
-        await pool.query('UPDATE issues SET upvotes = upvotes + 1 WHERE id = ?', [issueId]);
-        res.json({ message: 'Upvoted successfully' });
-    } catch (error) {
-        console.error("Database error:", error);
-        res.status(500).json({ error: 'Internal Server Error' });
-    }
+    const crawled = crawler.getCrawledIssues();
+    const allIssues = [...crawled, ...dbIssues];
+    res.json(allIssues);
 });
 
 // Start the server
@@ -91,3 +68,4 @@ app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
     console.log(`Ready for cPanel App Manager Deployment`);
 });
+
