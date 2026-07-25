@@ -155,10 +155,20 @@ document.addEventListener('DOMContentLoaded', () => {
             card.style.animationDelay = `${delay}s`;
             
             const tagBg = categoryColors[issue.category] || "#00ffcc";
-            const targetUrl = issue.sourceUrl || '#';
-            const titleHtml = issue.sourceUrl 
-                ? `<a href="${issue.sourceUrl}" target="_blank" rel="noopener noreferrer" class="issue-title-link">${issue.title} <i class="fa-solid fa-arrow-up-right-from-square" style="font-size: 0.8rem; margin-left: 5px;"></i></a>`
-                : issue.title;
+            
+            // Build internal detail link URL with query params
+            const detailParams = new URLSearchParams({
+                title: issue.title || '',
+                category: issue.category || 'Human Rights',
+                location: issue.location || 'National',
+                desc: issue.description || '',
+                upvotes: issue.upvotes || 0,
+                time: issue.created_at ? new Date(issue.created_at).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) : 'Live',
+                sourceUrl: issue.sourceUrl || ''
+            }).toString();
+
+            const detailPageUrl = `detail.html?${detailParams}`;
+            const titleHtml = `<a href="${detailPageUrl}" class="issue-title-link">${issue.title}</a>`;
 
             card.innerHTML = `
                 <div class="upvote-col">
@@ -181,6 +191,7 @@ document.addEventListener('DOMContentLoaded', () => {
             `;
             issuesContainer.appendChild(card);
         });
+
 
         // Add Upvote Listeners
         document.querySelectorAll('.upvote-btn').forEach(btn => {

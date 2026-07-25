@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Issue Details - VOICE Platform</title>
+    <meta name="description" content="Detailed report and news background for socio-political events and citizen reports.">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    
+    <!-- Google AdSense Auto-Ads Script -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX"
+     crossorigin="anonymous"></script>
+
+    <style>
+        .detail-container { padding: 40px; max-width: 900px; margin: 40px auto; color: #e0e0e0; }
+        .back-btn { display: inline-flex; align-items: center; gap: 8px; color: var(--primary-neon); text-decoration: none; font-weight: 600; margin-bottom: 25px; transition: transform 0.2s ease; }
+        .back-btn:hover { transform: translateX(-4px); }
+        .detail-meta { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; flex-wrap: wrap; }
+        .detail-title { font-size: 2.2rem; font-weight: 700; color: #fff; margin-bottom: 20px; line-height: 1.3; }
+        .detail-body { font-size: 1.15rem; line-height: 1.9; color: #d0d0df; margin-bottom: 30px; }
+        .action-bar { display: flex; align-items: center; justify-content: space-between; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px; flex-wrap: wrap; gap: 15px; }
+        .source-link-btn { display: inline-flex; align-items: center; gap: 8px; padding: 12px 24px; background: linear-gradient(135deg, #00ffcc, #00bbff); color: #0a0a0f; font-weight: 700; border-radius: 8px; text-decoration: none; }
+        .source-link-btn:hover { opacity: 0.9; }
+    </style>
+</head>
+<body>
+    <div class="bg-gradient bg-grad-1"></div>
+    <div class="bg-gradient bg-grad-2"></div>
+
+    <div class="detail-container glass-panel">
+        <a href="index.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i> Back to Live Feed</a>
+        
+        <div id="article-content">
+            <div class="detail-meta">
+                <span class="tag" id="art-tag" style="background: #00ffcc; box-shadow: 0 0 10px #00ffcc80;">Category</span>
+                <span class="location"><i class="fa-solid fa-location-dot"></i> <span id="art-location">Location</span></span>
+                <span class="time"><i class="fa-solid fa-clock"></i> <span id="art-time">Date</span></span>
+            </div>
+
+            <h1 class="detail-title" id="art-title">Loading Article Details...</h1>
+
+            <!-- AdSense Detail Top Ad Unit -->
+            <div class="adsense-unit ads-header">
+                <div class="ads-label">ADVERTISEMENT</div>
+                <ins class="adsbygoogle"
+                     style="display:block"
+                     data-ad-client="ca-pub-XXXXXXXXXXXXXXXX"
+                     data-ad-slot="5566778899"
+                     data-ad-format="auto"
+                     data-full-width-responsive="true"></ins>
+                <script>
+                     (adsbygoogle = window.adsbygoogle || []).push({});
+                </script>
+            </div>
+
+            <div class="detail-body" id="art-body">
+                Please wait while we retrieve the complete report context...
+            </div>
+
+            <div class="action-bar">
+                <div class="upvote-col" style="flex-direction: row; gap: 10px; align-items: center;">
+                    <button class="upvote-btn" id="art-upvote-btn">
+                        <i class="fa-solid fa-chevron-up"></i>
+                    </button>
+                    <span class="vote-count" id="art-upvotes">0</span> Upvotes
+                </div>
+
+                <a href="#" target="_blank" rel="noopener noreferrer" id="art-source-link" class="source-link-btn">
+                    Read Full News Coverage <i class="fa-solid fa-external-link"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const params = new URLSearchParams(window.location.search);
+            const title = params.get('title') || "Detailed News Report";
+            const category = params.get('category') || "Human Rights";
+            const location = params.get('location') || "National";
+            const desc = params.get('desc') || "Full detailed coverage of this incident. Investigations and public updates continue as citizens report verified evidence to the platform.";
+            const upvotes = params.get('upvotes') || "120";
+            const time = params.get('time') || "Just Now";
+            const sourceUrl = params.get('sourceUrl') || "https://news.google.com";
+
+            const categoryColors = {
+                "Corruption": "#ff0055",
+                "Electoral Fraud": "#ffaa00",
+                "Human Rights": "#00ffcc",
+                "Media Suppression": "#bb00ff"
+            };
+
+            const tagEl = document.getElementById('art-tag');
+            tagEl.textContent = category;
+            const catBg = categoryColors[category] || "#00ffcc";
+            tagEl.style.background = catBg;
+            tagEl.style.boxShadow = `0 0 10px ${catBg}80`;
+
+            document.getElementById('art-title').textContent = title;
+            document.getElementById('art-location').textContent = location;
+            document.getElementById('art-time').textContent = time;
+            document.getElementById('art-body').innerHTML = `<p>${desc}</p><p style="margin-top: 15px;">Additional background: This event was automatically tracked and verified by the VOICE continuous news crawler engine. Stay tuned to the live feed for real-time updates.</p>`;
+            document.getElementById('art-upvotes').textContent = parseInt(upvotes).toLocaleString();
+            
+            const sourceBtn = document.getElementById('art-source-link');
+            if (sourceUrl && sourceUrl !== '#') {
+                sourceBtn.href = sourceUrl;
+            } else {
+                sourceBtn.style.display = 'none';
+            }
+
+            const upvoteBtn = document.getElementById('art-upvote-btn');
+            upvoteBtn.addEventListener('click', function() {
+                this.classList.toggle('voted');
+                const countSpan = document.getElementById('art-upvotes');
+                let count = parseInt(countSpan.textContent.replace(/,/g, ''));
+                countSpan.textContent = (this.classList.contains('voted') ? count + 1 : count - 1).toLocaleString();
+            });
+        });
+    </script>
+</body>
+</html>
